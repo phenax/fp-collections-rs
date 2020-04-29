@@ -1,2 +1,2 @@
-# collections
-A collections library for rust
+# fp-collections
+A functional collections library for rust
