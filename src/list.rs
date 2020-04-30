@@ -86,5 +86,10 @@ impl<T: Clone> List<T> {
         }
     }
 
-    // pub fn is_empty(&self) -> bool { return *self == Nil; }
+    pub fn is_empty(&self) -> bool {
+        return match *self {
+            Nil => true,
+            Cons(_, _) => false,
+        };
+    }
 }
