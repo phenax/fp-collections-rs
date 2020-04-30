@@ -9,7 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup
-      run: sh .github/workflows/install.sh
+      run: bash .github/workflows/install.sh
     - name: Env
       run: echo "Rust:$(rustc -V) $(cargo version)"
     - name: Lint
