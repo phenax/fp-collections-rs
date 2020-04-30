@@ -18,7 +18,7 @@ jobs:
       run: cargo build --verbose
     - name: Run tests
       run: cargo test --verbose
-    - name: Upload coverage report
-      env:
-        CODECOV_TOKEN: 40f42e3c-5148-4dd4-9076-a545edac3586
-      run: cargo cmd coverage && bash <(curl -s https://codecov.io/bash)
+    # - name: Upload coverage report
+      # env:
+        # CODECOV_TOKEN: 40f42e3c-5148-4dd4-9076-a545edac3586
+      # run: cargo cmd coverage && bash <(curl -s https://codecov.io/bash)
