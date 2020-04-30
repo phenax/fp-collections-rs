@@ -12,6 +12,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Env
+      run: echo "Rust:$(rustc -V) Cargo:$(cargo version)"
     - name: Lint
       run: cargo clippy -- -D warnings
     - name: Build
