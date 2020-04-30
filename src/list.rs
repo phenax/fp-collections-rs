@@ -23,14 +23,14 @@ impl<T: Clone> List<T> {
     pub fn append(self, item: T) -> Self {
         match self {
             Nil => ls![item],
-            Cons(head, tail) => tail.clone().append(item).prepend(head),
+            Cons(head, tail) => tail.append(item).prepend(head),
         }
     }
 
     pub fn concat(self, other: &Self) -> Self {
         match self {
             Nil => other.clone(),
-            Cons(head, tail) => tail.clone().concat(other).prepend(head),
+            Cons(head, tail) => tail.concat(other).prepend(head),
         }
     }
 

@@ -229,7 +229,7 @@ pub mod ls_foldl {
     #[test]
     fn it_sums_a_list() {
         let list = ls![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        let result = list.clone().foldl(|a, b| a + b, 0);
+        let result = list.foldl(|a, b| a + b, 0);
         assert_eq!(result, 55);
     }
 }
