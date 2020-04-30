@@ -2,7 +2,7 @@
 name = "fp-collections"
 version = "0.0.0"
 description = "An alternate collections library for rust"
-authors = ["Akshay Nair <phenax5@gmail.com>"]
+authors = ["Akshay Nair <phenax5@gmail.com>", "Melwyn Saldanha <melwyn95@gmail.com>"]
 edition = "2018"
 license = "MIT"
 keywords = ["collections", "collection", "list", "linked", "ocaml"]
