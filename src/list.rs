@@ -15,7 +15,7 @@ macro_rules! ls[
   [$x:expr, $($xs:expr),+] => (List::Cons($x, Box::new(ls![$($xs),+])));
 ];
 
-impl<T: Clone> List<T> {
+impl<T: Clone> List<T> where T: Eq {
     pub fn new<A>() -> Self { Nil }
 
     pub fn prepend(self, x: T) -> Self { Cons(x, Box::new(self)) }
@@ -86,10 +86,5 @@ impl<T: Clone> List<T> {
         }
     }
 
-    pub fn is_empty(&self) -> bool {
-        return match *self {
-            Nil => true,
-            Cons(_, _) => false,
-        };
-    }
+    pub fn is_empty(&self) -> bool { return self.eq(&Nil); }
 }
