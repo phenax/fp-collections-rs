@@ -137,6 +137,44 @@ pub mod ls_prepend {
     }
 }
 
+pub mod ls_append {
+    use fp_collections::{list::{List}, ls};
+
+    #[test]
+    fn it_prepends_an_item_to_an_empty_list() {
+        let list: List<i32> = ls![];
+        let newlist = list.clone().append(9);
+        assert_eq!(newlist, ls![9]);
+        assert_eq!(list, ls![]);
+    }
+
+    #[test]
+    fn it_prepends_an_item_to_the_list() {
+        let list = ls![2, 1];
+        let newlist = list.clone().append(3);
+        assert_eq!(newlist, ls![2, 1, 3]);
+        assert_eq!(list, ls![2, 1]);
+    }
+}
+
+pub mod ls_concat {
+    use fp_collections::{list::{List}, ls};
+
+    #[test]
+    fn it_concats_empty_list() {
+        let empty: List<u8> = ls![];
+        assert_eq!(empty.concat(&ls![]), ls![]);
+        assert_eq!(ls![].concat(&ls![1, 2, 3]), ls![1, 2, 3]);
+        assert_eq!(ls![1, 2, 3].concat(&ls![]), ls![1, 2, 3]);
+    }
+
+    #[test]
+    fn it_concats_lists() {
+        let list = ls![1, 2, 3, 4, 5];
+        let list2 = ls![6, 7, 8, 9, 10];
+        assert_eq!(list.concat(&list2), ls![1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    }
+}
 
 pub mod ls_map {
     use fp_collections::{list::{List}, ls};
@@ -195,6 +233,4 @@ pub mod ls_foldl {
         assert_eq!(result, 55);
     }
 }
-
-
 

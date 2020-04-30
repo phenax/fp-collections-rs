@@ -20,6 +20,20 @@ impl<T: Clone> List<T> {
 
     pub fn prepend(self, x: T) -> Self { Cons(x, Box::new(self)) }
 
+    pub fn append(self, item: T) -> Self {
+        match self {
+            Nil => ls![item],
+            Cons(head, tail) => tail.clone().append(item).prepend(head),
+        }
+    }
+
+    pub fn concat(self, other: &Self) -> Self {
+        match self {
+            Nil => other.clone(),
+            Cons(head, tail) => tail.clone().concat(other).prepend(head),
+        }
+    }
+
     pub fn get(&self, index: u32) -> Option<&T> {
         match self {
             Nil => None,
