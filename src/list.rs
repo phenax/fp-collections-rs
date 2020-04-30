@@ -29,6 +29,15 @@ impl<T: Clone> List<T> {
     }
 
     pub fn head(&self) -> Option<&T> { return self.get(0); }
+    pub fn tail(&self) -> Self {
+        match self {
+            Nil => (*self).clone(),
+            Cons(_, ref tail) => unsafe {
+                let t = (*tail).clone();
+                return (*Box::into_raw(t)).clone();
+            },
+        }
+    }
 
     pub fn map<R>(self, func: fn(x: T) -> R) -> List<R> {
         match self {

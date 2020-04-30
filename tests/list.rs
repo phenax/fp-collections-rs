@@ -100,6 +100,22 @@ pub mod ls_head {
     }
 }
 
+pub mod ls_tail {
+    use fp_collections::{list::{List}, ls};
+
+    #[test]
+    fn it_returns_some_head_if_it_exists() {
+        let list = ls!(5, 4, 3, 2, 1);
+        assert_eq!(list.tail(), ls!(4, 3, 2, 1));
+    }
+
+    #[test]
+    fn it_returns_none_if_it_doesnt_exists() {
+        let list: List<i32> = ls!();
+        assert_eq!(list.tail(), ls!());
+    }
+}
+
 
 pub mod ls_prepend {
     use fp_collections::{list::{List}, ls};
