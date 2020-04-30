@@ -16,7 +16,7 @@ macro_rules! ls[
 ];
 
 impl<T: Clone> List<T> {
-    pub fn new<A>() -> List<A> { Nil }
+    pub fn new<A>() -> Self { Nil }
 
     pub fn prepend(self, x: T) -> Self { return Cons(x, Box::new(self)); }
 
@@ -42,7 +42,7 @@ impl<T: Clone> List<T> {
     pub fn map<R>(self, func: fn(x: T) -> R) -> List<R> {
         match self {
             Nil => Nil,
-            Cons(x, tail) => Cons(func(x), Box::new(tail.clone().map(func))),
+            Cons(x, tail) => Cons(func(x), Box::new(tail.map(func))),
         }
     }
 
@@ -50,9 +50,9 @@ impl<T: Clone> List<T> {
         match self {
             Nil => self,
             Cons(x, tail) => if func(&x) {
-                return Cons(x, Box::new(tail.clone().filter(func)));
+                return Cons(x, Box::new(tail.filter(func)));
             } else {
-                return tail.clone().filter(func);
+                return tail.filter(func);
             }
         }
     }
@@ -63,4 +63,6 @@ impl<T: Clone> List<T> {
             Cons(_, ref tail) => 1 + tail.len(),
         }
     }
+
+    // pub fn is_empty(&self) -> bool { return *self == Nil; }
 }

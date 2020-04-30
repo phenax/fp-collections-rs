@@ -9,6 +9,11 @@ keywords = ["collections", "collection", "list", "linked", "ocaml"]
 repository = "https://github.com/phenax/collections"
 readme = "README.md"
 
+# Add scripts (Install cargo-cmd: cargo install cargo-cmd)
+[package.metadata.commands]
+lint = "cargo +nightly clippy"
+fix = "cargo +nightly clippy --fix -Z unstable-options"
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
