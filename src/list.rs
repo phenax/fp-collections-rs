@@ -18,7 +18,7 @@ macro_rules! ls[
 impl<T: Clone> List<T> {
     pub fn new<A>() -> Self { Nil }
 
-    pub fn prepend(self, x: T) -> Self { return Cons(x, Box::new(self)); }
+    pub fn prepend(self, x: T) -> Self { Cons(x, Box::new(self)) }
 
     pub fn get(&self, index: u32) -> Option<&T> {
         match self {
@@ -28,13 +28,13 @@ impl<T: Clone> List<T> {
         }
     }
 
-    pub fn head(&self) -> Option<&T> { return self.get(0); }
+    pub fn head(&self) -> Option<&T> { self.get(0) }
     pub fn tail(&self) -> Self {
         match self {
             Nil => (*self).clone(),
             Cons(_, ref tail) => unsafe {
                 let t = (*tail).clone();
-                return (*Box::into_raw(t)).clone();
+                (*Box::into_raw(t)).clone()
             },
         }
     }
@@ -50,9 +50,9 @@ impl<T: Clone> List<T> {
         match self {
             Nil => self,
             Cons(x, tail) => if func(&x) {
-                return Cons(x, Box::new(tail.filter(func)));
+                Cons(x, Box::new(tail.filter(func)))
             } else {
-                return tail.filter(func);
+                tail.filter(func)
             }
         }
     }
