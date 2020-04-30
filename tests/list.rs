@@ -176,3 +176,14 @@ pub mod ls_filter {
         assert_eq!(newlist, ls![2, 4, 6, 8, 10]);
     }
 }
+
+pub mod ls_fold_left {
+    use fp_collections::{list::{List}, ls};
+
+    #[test]
+    fn it_calculate_sum_using_fold_left() {
+        let list: List<i32> = ls![1, 2, 3, 4, 5];
+        let sum = list.clone().fold_left(|acc, x| acc + x, 0);
+        assert_eq!(15, sum);
+    }
+}

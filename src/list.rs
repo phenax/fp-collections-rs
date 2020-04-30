@@ -66,4 +66,14 @@ impl<T: Clone> List<T> {
     }
 
     // pub fn is_empty(&self) -> bool { return *self == Nil; }
+
+    pub fn fold_left<R>(self, f: fn(R, T) -> R, inital: R) -> R {
+        fn aux<T, R>(acc: R, xs: List<T>, f: fn(R, T) -> R) -> R  {
+            match xs {
+                Nil => acc,
+                Cons(x, tail) => aux(f(acc, x), *tail, f)
+            }
+        };
+        aux(inital, self, f)
+    }
 }
