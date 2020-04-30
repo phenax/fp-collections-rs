@@ -10,9 +10,9 @@ pub use List::{Cons, Nil};
 
 #[macro_export]
 macro_rules! ls[
-  ()                       => (List::Nil);
-  ($x:expr)                => (List::Cons($x, Box::new(List::Nil)));
-  ($x:expr, $($xs:expr),+) => (List::Cons($x, Box::new(ls!($($xs),+))));
+  []                       => (List::Nil);
+  [$x:expr]                => (List::Cons($x, Box::new(List::Nil)));
+  [$x:expr, $($xs:expr),+] => (List::Cons($x, Box::new(ls![$($xs),+])));
 ];
 
 impl<T: Clone> List<T> {
@@ -29,6 +29,7 @@ impl<T: Clone> List<T> {
     }
 
     pub fn head(&self) -> Option<&T> { self.get(0) }
+
     pub fn tail(&self) -> Self {
         match self {
             Nil => (*self).clone(),
