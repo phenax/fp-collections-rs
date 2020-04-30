@@ -27,8 +27,8 @@ get_binaries() {
 }
 
 # Install kcov if required
-which kcov || install_kcov;
-cd $root;
+# which kcov || install_kcov;
+# cd $root;
 
 # Build report
 get_binaries | while read bin; do report_cov $bin; done;
