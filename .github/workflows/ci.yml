@@ -11,7 +11,7 @@ jobs:
     - name: Setup
       run: bash .github/workflows/install.sh
     - name: Env
-      run: echo "Rust:$(rustc -V) $(cargo version)"
+      run: echo -e "$(whereis rustc)||$(whereis cargo)\nRust:$(rustc -V) \n$(cargo version)"
     - name: Lint
       run: cargo clippy -- -D warnings
     - name: Build
