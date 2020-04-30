@@ -40,6 +40,13 @@ impl<T: Clone> List<T> {
         }
     }
 
+    pub fn foldl<R>(self, func: fn(R, T) -> R, init: R) -> R {
+        match self {
+            Nil => init,
+            Cons(x, tail) => tail.foldl(func, func(init, x)),
+        }
+    }
+
     pub fn map<R>(self, func: fn(x: T) -> R) -> List<R> {
         match self {
             Nil => Nil,

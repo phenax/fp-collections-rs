@@ -162,17 +162,39 @@ pub mod ls_filter {
     use fp_collections::{list::{List}, ls};
 
     #[test]
-    fn it_filter_an_empty_list() {
+    fn it_filters_an_empty_list() {
         let list: List<i32> = ls![];
         let newlist = list.clone().filter(|x| x % 2 == 0);
         assert_eq!(list, newlist);
     }
 
     #[test]
-    fn it_filter_out_a_list_of_even_numbers() {
+    fn it_filters_out_a_list_of_even_numbers() {
         let list = ls![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
         let newlist = list.clone().filter(|x| x % 2 == 0);
         assert_ne!(list, newlist);
         assert_eq!(newlist, ls![2, 4, 6, 8, 10]);
     }
 }
+
+
+pub mod ls_foldl {
+    use fp_collections::{list::{List}, ls};
+
+    #[test]
+    fn it_sums_an_empty_list() {
+        let list: List<i32> = ls![];
+        let newlist = list.clone().filter(|x| x % 2 == 0);
+        assert_eq!(list, newlist);
+    }
+
+    #[test]
+    fn it_sums_a_list() {
+        let list = ls![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        let result = list.clone().foldl(|a, b| a + b, 0);
+        assert_eq!(result, 55);
+    }
+}
+
+
+
