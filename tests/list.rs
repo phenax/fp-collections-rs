@@ -108,28 +108,16 @@ pub mod ls_prepend {
     fn it_prepends_an_item_to_an_empty_list() {
         let list: List<i32> = ls!();
         let newlist = list.clone().prepend(9);
-        match newlist.head() {
-            Some(n) => assert_eq!(*n, 9),
-            None => panic!("Expected Some"),
-        }
-        match list.head() {
-            Some(_) => panic!("Expected None"),
-            None => (),
-        }
+        assert_eq!(newlist, ls!(9));
+        assert_eq!(list, ls!());
     }
 
     #[test]
     fn it_prepends_an_item_to_the_list() {
         let list = ls!(2, 1);
         let newlist = list.clone().prepend(3);
-        match newlist.head() {
-            Some(n) => assert_eq!(*n, 3),
-            None => panic!("Expected Some"),
-        }
-        match list.head() {
-            Some(n) => assert_eq!(*n, 2),
-            None => panic!("Expected Some"),
-        }
+        assert_eq!(newlist, ls!(3, 2, 1));
+        assert_eq!(list, ls!(2, 1));
     }
 }
 
