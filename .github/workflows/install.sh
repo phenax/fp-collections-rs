@@ -7,4 +7,4 @@ rustup component add clippy --toolchain=nightly;
 
 cargo install cargo-cmd;
 
-apt-get install kcov;
+sudo apt-get install kcov;
