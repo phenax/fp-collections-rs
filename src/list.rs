@@ -66,4 +66,23 @@ impl<T: Clone> List<T> {
     }
 
     // pub fn is_empty(&self) -> bool { return *self == Nil; }
+
+
+    //TODO: Implement this more efficiently O(n)
+    //append - add a value to the end of a list
+    pub fn append(self, y: T) -> Self {
+        match self {
+            Nil => Cons(y, Box::new(Nil)),
+            Cons(x, tail) => Cons(x, Box::new(tail.append(y)))
+        }
+    }
+
+    //TODO: Implement this more efficiently O(n^2)
+    //concat - combine two lists (1, (2, Nil)) + (3, Nil) -> (1, (2, (3, Nil)))
+    pub fn concat(self, ys: List<T>) -> Self {
+        match ys {
+            Nil => self,
+            Cons(y, tail) => self.append(y).concat(*tail)
+        }
+    }
 }
