@@ -50,13 +50,13 @@ pub mod ls_is_empty {
     fn it_returns_true_for_empty_list() {
         let empty: List<u8> = ls![];
         assert_eq!(empty.is_empty(), true);
-        // assert_eq!(empty.null(), true);
+        assert_eq!(empty.null(), true);
     }
 
     #[test]
     fn it_returns_false_for_nonempty_list() {
         assert_eq!(ls![1, 2].is_empty(), false);
-        // assert_eq!(ls![1, 2].null(), false);
+        assert_eq!(ls![1, 2].null(), false);
     }
 }
 

@@ -15,9 +15,22 @@ macro_rules! ls[
   [$x:expr, $($xs:expr),+] => (List::Cons($x, Box::new(ls![$($xs),+])));
 ];
 
-impl<T: Clone> List<T> where T: Eq {
+
+impl<T: Eq> List<T> {
     pub fn new<A>() -> Self { Nil }
 
+    pub fn is_empty(&self) -> bool { self.eq(&Nil) }
+    pub fn null(&self) -> bool { self.is_empty() }
+
+    pub fn len(&self) -> u32 {
+        match *self {
+            Nil => 0,
+            Cons(_, ref tail) => 1 + tail.len(),
+        }
+    }
+}
+
+impl<T: Clone> List<T> where T: Eq {
     pub fn prepend(self, x: T) -> Self { Cons(x, Box::new(self)) }
 
     pub fn append(self, item: T) -> Self {
@@ -78,13 +91,4 @@ impl<T: Clone> List<T> where T: Eq {
             }
         }
     }
-
-    pub fn len(&self) -> u32 {
-        match *self {
-            Nil => 0,
-            Cons(_, ref tail) => 1 + tail.len(),
-        }
-    }
-
-    pub fn is_empty(&self) -> bool { return self.eq(&Nil); }
 }
