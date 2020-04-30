@@ -87,10 +87,7 @@ pub mod ls_get {
     #[test]
     fn it_returns_none_if_it_doesnt_exists() {
         let list = ls![5, 4, 3, 2, 1];
-        match list.get(5) {
-            Some(_) => panic!("Expected None"),
-            None => (),
-        }
+        if list.get(5).is_some() { panic!("Expected None") }
     }
 }
 
@@ -110,10 +107,7 @@ pub mod ls_head {
     #[test]
     fn it_returns_none_if_it_doesnt_exists() {
         let list: List<i32> = ls![];
-        match list.head() {
-            Some(_) => panic!("Expected None"),
-            None => (),
-        }
+        if list.head().is_some() { panic!("Expected None") }
     }
 }
 
