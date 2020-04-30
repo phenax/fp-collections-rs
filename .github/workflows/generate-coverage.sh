@@ -2,9 +2,10 @@
 
 bin_dir=target/debug;
 cov_dir=target/cov;
+kcov=$(which kcov || echo "kcov-master/build/src/kcov");
 
 report_cov() {
-  kcov --exclude-pattern=/.cargo,/usr/lib --verify $cov_dir "$1";
+  ./$kcov --exclude-pattern=/.cargo,/usr/lib --verify $cov_dir "$1";
 }
 
 get_binaries() {
