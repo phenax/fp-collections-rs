@@ -15,7 +15,6 @@ macro_rules! ls[
   [$x:expr, $($xs:expr),+] => (List::Cons($x, Box::new(ls![$($xs),+])));
 ];
 
-
 impl<T: Eq> List<T> {
     pub fn new<A>() -> Self { Nil }
 
@@ -30,7 +29,7 @@ impl<T: Eq> List<T> {
     }
 }
 
-impl<T: Clone> List<T> where T: Eq {
+impl<T: Clone> List<T> {
     pub fn prepend(self, x: T) -> Self { Cons(x, Box::new(self)) }
 
     pub fn append(self, item: T) -> Self {
