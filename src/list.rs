@@ -1,12 +1,12 @@
 #![macro_use]
 
-#[derive(Clone, Debug)]
+#[derive(PartialEq, Eq, Clone, Debug)]
 pub enum List<T> {
     Cons(T, Box<List<T>>),
     Nil,
 }
 
-use List::{Cons, Nil};
+pub use List::{Cons, Nil};
 
 #[macro_export]
 macro_rules! ls[
@@ -37,7 +37,7 @@ impl<T: Clone> List<T> {
         }
     }
 
-    pub fn filter(self, func: fn(x: &T) -> bool) -> Self {
+    pub fn filter(self, func: fn(&T) -> bool) -> Self {
         match self {
             Nil => self,
             Cons(x, tail) => if func(&x) {
