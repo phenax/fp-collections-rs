@@ -28,6 +28,8 @@ impl<T: Clone> List<T> {
         }
     }
 
+    pub fn head(&self) -> Option<&T> { return self.get(0); }
+
     pub fn map<R>(self, func: fn(x: T) -> R) -> List<R> {
         match self {
             Nil => Nil,
