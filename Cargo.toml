@@ -13,6 +13,8 @@ readme = "README.md"
 [package.metadata.commands]
 lint = "cargo +nightly clippy"
 fix = "cargo +nightly clippy --fix -Z unstable-options"
+cov = "cargo test && cargo cmd coverage"
+coverage = "bash .github/workflows/generate-coverage.sh"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

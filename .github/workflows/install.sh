@@ -1,8 +1,10 @@
-#!/bin/bash
-
-# sh <(curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs) -y && \
+#!/usr/bin/env bash
 
 rustup update stable;
 
 rustup toolchain install nightly && \
 rustup component add clippy --toolchain=nightly;
+
+cargo install cargo-cmd;
+
+apt-get install kcov;
