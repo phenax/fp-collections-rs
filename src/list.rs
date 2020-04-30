@@ -59,11 +59,16 @@ impl<T: Clone> List<T> {
     }
 
     pub fn len(&self) -> u32 {
-        match *self {
-            Nil => 0,
-            Cons(_, ref tail) => 1 + tail.len(),
-        }
+        fn aux<T>(xs: &List<T>, size: u32) -> u32 {
+            match *xs {
+                Nil => size,
+                Cons(_, ref tail) => aux(tail, size + 1),
+            }
+        };
+        aux(self, 0)
     }
 
-    // pub fn is_empty(&self) -> bool { return *self == Nil; }
+    //TODO: Later somehow manage to check for *self == Nil;
+    pub fn is_empty(&self) -> bool { self.len() == 0  }
+
 }

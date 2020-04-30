@@ -176,3 +176,31 @@ pub mod ls_filter {
         assert_eq!(newlist, ls![2, 4, 6, 8, 10]);
     }
 }
+
+pub mod ls_len {
+    use fp_collections::{list::{List}, ls};
+
+    #[test]
+    fn it_calculate_corrent_length_list() {
+        let empty: List<i32> = ls![];
+        assert_eq!(empty.len(), 0);
+
+        assert_eq!(ls![1].len(), 1);
+        assert_eq!(ls![1, 2].len(), 2);
+    }
+}
+
+pub mod ls_empty {
+    use fp_collections::{list::{List}, ls};
+
+    #[test]
+    fn it_check_list() {
+        assert_eq!(ls![1, 2].is_empty(), false);
+    }
+
+    #[test]
+    fn it_check_empty_list() {
+        let empty: List<i32> = ls![];
+        assert_eq!(empty.is_empty(), true);
+    }
+}
