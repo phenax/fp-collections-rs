@@ -13,7 +13,7 @@ jobs:
     - name: Env
       run: echo -e "$(whereis rustc)||$(whereis cargo)\nRust:$(rustc -V) \n$(cargo version)"
     - name: Lint
-      run: cargo clippy -- -D warnings
+      run: cargo clippy
     - name: Build
       run: cargo build --verbose
     - name: Run tests
