@@ -1,10 +1,6 @@
 name: CI Checks
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: push
 
 jobs:
   build:
@@ -12,8 +8,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Setup
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh && \
+        curl https://sh.rustup.rs -sSf | sh && \
+        cargo install --git https://github.com/rust-lang/rust-clippy/ --force clippy
     - name: Env
-      run: echo "Rust:$(rustc -V) Cargo:$(cargo version)"
+      run: echo "Rust:$(rustc -V) $(cargo version)"
     - name: Lint
       run: cargo clippy -- -D warnings
     - name: Build
