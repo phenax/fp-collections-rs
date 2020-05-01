@@ -7,6 +7,28 @@ fn it_creates_list() {
     assert_eq!(debug_str, "Cons(1, Cons(2, Nil))");
 }
 
+pub mod list_from {
+    use fp_collections::{list::{List}, ls};
+
+    #[test]
+    fn it_returns_list_from_array() {
+        let arr: &[i32] = &[0, 1, 2, 3];
+        assert_eq!(List::from(arr), ls![0, 1, 2, 3]);
+
+        let arr: &[i32] = &[];
+        assert_eq!(List::from(arr), ls![]);
+    }
+
+    #[test]
+    fn it_returns_list_from_iterator() {
+        let arr: &[i32] = &[0, 1, 2, 3];
+        assert_eq!(List::from(arr.iter()), ls![0, 1, 2, 3]);
+
+        let arr: &[i32] = &[];
+        assert_eq!(List::from(arr.iter()), ls![]);
+    }
+}
+
 pub mod ls_clone {
     use fp_collections::{list::{List}, ls};
 
@@ -43,6 +65,23 @@ pub mod ls_eq {
     }
 }
 
+pub mod ls_is_empty {
+    use fp_collections::{list::{List}, ls};
+
+    #[test]
+    fn it_returns_true_for_empty_list() {
+        let empty: List<u8> = ls![];
+        assert_eq!(empty.is_empty(), true);
+        assert_eq!(empty.null(), true);
+    }
+
+    #[test]
+    fn it_returns_false_for_nonempty_list() {
+        assert_eq!(ls![1, 2].is_empty(), false);
+        assert_eq!(ls![1, 2].null(), false);
+    }
+}
+
 
 pub mod ls_get {
     use fp_collections::{list::{List}, ls};
@@ -70,10 +109,7 @@ pub mod ls_get {
     #[test]
     fn it_returns_none_if_it_doesnt_exists() {
         let list = ls![5, 4, 3, 2, 1];
-        match list.get(5) {
-            Some(_) => panic!("Expected None"),
-            None => (),
-        }
+        if list.get(5).is_some() { panic!("Expected None") }
     }
 }
 
@@ -93,10 +129,7 @@ pub mod ls_head {
     #[test]
     fn it_returns_none_if_it_doesnt_exists() {
         let list: List<i32> = ls![];
-        match list.head() {
-            Some(_) => panic!("Expected None"),
-            None => (),
-        }
+        if list.head().is_some() { panic!("Expected None") }
     }
 }
 
@@ -137,6 +170,60 @@ pub mod ls_prepend {
     }
 }
 
+pub mod ls_append {
+    use fp_collections::{list::{List}, ls};
+
+    #[test]
+    fn it_prepends_an_item_to_an_empty_list() {
+        let list: List<i32> = ls![];
+        let newlist = list.clone().append(9);
+        assert_eq!(newlist, ls![9]);
+        assert_eq!(list, ls![]);
+    }
+
+    #[test]
+    fn it_prepends_an_item_to_the_list() {
+        let list = ls![2, 1];
+        let newlist = list.clone().append(3);
+        assert_eq!(newlist, ls![2, 1, 3]);
+        assert_eq!(list, ls![2, 1]);
+    }
+}
+
+pub mod ls_concat {
+    use fp_collections::{list::{List}, ls};
+
+    #[test]
+    fn it_concat_two_empty_lists() {
+        let xs: List<i32> = ls![];
+        let ys: List<i32> = ls![];
+        let newlist = xs.clone().concat(ys);
+        assert_eq!(ls![], newlist);
+    }
+
+    #[test]
+    fn it_concat_empty_list_list() {
+        let xs: List<i32> = ls![];
+        let ys: List<i32> = ls![1, 2, 3];
+        let newlist = xs.clone().concat(ys);
+        assert_eq!(ls![1, 2, 3], newlist);
+    }
+
+    #[test]
+    fn it_concat_list_and_empty_list() {
+        let xs: List<i32> = ls![1, 2, 3];
+        let ys: List<i32> = ls![];
+        let newlist = xs.clone().concat(ys);
+        assert_eq!(ls![1, 2, 3], newlist);
+    }
+        #[test]
+    fn it_concat_two_lists() {
+        let xs: List<i32> = ls![1, 2 ,3];
+        let ys: List<i32> = ls![4, 5, 6];
+        let newlist = xs.clone().concat(ys);
+        assert_eq!(ls![1, 2, 3, 4, 5, 6], newlist);
+    }
+}
 
 pub mod ls_map {
     use fp_collections::{list::{List}, ls};
@@ -162,17 +249,37 @@ pub mod ls_filter {
     use fp_collections::{list::{List}, ls};
 
     #[test]
-    fn it_filter_an_empty_list() {
+    fn it_filters_an_empty_list() {
         let list: List<i32> = ls![];
         let newlist = list.clone().filter(|x| x % 2 == 0);
         assert_eq!(list, newlist);
     }
 
     #[test]
-    fn it_filter_out_a_list_of_even_numbers() {
+    fn it_filters_out_a_list_of_even_numbers() {
         let list = ls![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
         let newlist = list.clone().filter(|x| x % 2 == 0);
         assert_ne!(list, newlist);
         assert_eq!(newlist, ls![2, 4, 6, 8, 10]);
     }
 }
+
+
+pub mod ls_foldl {
+    use fp_collections::{list::{List}, ls};
+
+    #[test]
+    fn it_sums_an_empty_list() {
+        let list: List<i32> = ls![];
+        let newlist = list.clone().foldl(|a, b| a + b, 0);
+        assert_eq!(newlist, 0);
+    }
+
+    #[test]
+    fn it_sums_a_list() {
+        let list = ls![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        let result = list.foldl(|a, b| a + b, 0);
+        assert_eq!(result, 55);
+    }
+}
+
