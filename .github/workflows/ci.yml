@@ -4,7 +4,7 @@ on: push
 
 jobs:
   build:
-    runs-on: rustdocker/rustfmt_clippy
+    runs-on: rust
 
     steps:
     - uses: actions/checkout@v2
