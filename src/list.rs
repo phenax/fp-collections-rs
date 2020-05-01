@@ -138,7 +138,7 @@ impl<T: Clone> List<T> {
                 } else {
                     tail.filter(func)
                 }
-            },
+            }
         }
     }
 
@@ -148,7 +148,7 @@ impl<T: Clone> List<T> {
         } else {
             match self {
                 Cons(_, tx) => tx.chop(ign - 1),
-                _ => panic!("TODO: meaningful error message")
+                _ => panic!("TODO: meaningful error message"),
             }
         }
     }
@@ -166,14 +166,14 @@ where
                 let bigger = tail.filter(|x| x >= &head).qsort();
 
                 smaller.append(head).concat(bigger)
-            },
+            }
         }
     }
 
     pub fn sort(&self) -> Self {
         let ln = self.len();
         if ln <= 1 {
-            return self.clone()
+            return self.clone();
         }
         let l1 = self.clone().chop(ln / 2);
         let l2 = self.clone().reverse().chop(ln - (ln / 2));
@@ -181,23 +181,30 @@ where
     }
 
     pub fn partition(self, p: fn(T) -> bool) -> (Self, Self) {
-        fn aux<T: Clone + Copy + Eq + Ord>(yes: List<T>, no: List<T>, p: fn(T) -> bool, xs: List<T>) -> (List<T>, List<T>) {
+        fn aux<T: Clone + Copy + Eq + Ord>(
+            yes: List<T>,
+            no: List<T>,
+            p: fn(T) -> bool,
+            xs: List<T>,
+        ) -> (List<T>, List<T>) {
             match xs {
                 Nil => (yes, no),
-                Cons(x, tx) => if p(x) { 
+                Cons(x, tx) => {
+                    if p(x) {
                         // By doing aux(Cons(x, Box::new(yes)), no, p, *tx) [efficent]
                         // We get the yes list in the reverse order, but if
                         // we want of preserve order we need to append [not efficient]
-                        aux(yes.append(x), no, p, *tx) 
+                        aux(yes.append(x), no, p, *tx)
                     } else {
-                        // aux(yes, Cons(x, Box::new(no)), p, *tx)  
-                        aux(yes, no.append(x), p, *tx) 
+                        // aux(yes, Cons(x, Box::new(no)), p, *tx)
+                        aux(yes, no.append(x), p, *tx)
                     }
+                }
             }
         };
         aux(Nil, Nil, p, self)
     }
-    
+
     pub fn merge(&self, ys: &List<T>) -> Self {
         match (self, ys) {
             (Nil, l) => l.clone(),

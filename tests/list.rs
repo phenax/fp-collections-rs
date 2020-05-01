@@ -307,7 +307,7 @@ pub mod ls_reverse {
 }
 
 pub mod ls_merge {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_merge_empty_lists() {
@@ -344,7 +344,7 @@ pub mod ls_merge {
 }
 
 pub mod ls_sort {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_sort_empty_list() {
@@ -366,7 +366,7 @@ pub mod ls_sort {
 }
 
 pub mod ls_partition {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_partitions_list() {
