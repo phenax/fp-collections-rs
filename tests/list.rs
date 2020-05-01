@@ -197,7 +197,7 @@ pub mod ls_concat {
     fn it_concat_two_empty_lists() {
         let xs: List<i32> = ls![];
         let ys: List<i32> = ls![];
-        let newlist = xs.clone().concat(ys);
+        let newlist = xs.concat(ys);
         assert_eq!(ls![], newlist);
     }
 
@@ -205,7 +205,7 @@ pub mod ls_concat {
     fn it_concat_empty_list_list() {
         let xs: List<i32> = ls![];
         let ys: List<i32> = ls![1, 2, 3];
-        let newlist = xs.clone().concat(ys);
+        let newlist = xs.concat(ys);
         assert_eq!(ls![1, 2, 3], newlist);
     }
 
@@ -213,14 +213,14 @@ pub mod ls_concat {
     fn it_concat_list_and_empty_list() {
         let xs: List<i32> = ls![1, 2, 3];
         let ys: List<i32> = ls![];
-        let newlist = xs.clone().concat(ys);
+        let newlist = xs.concat(ys);
         assert_eq!(ls![1, 2, 3], newlist);
     }
         #[test]
     fn it_concat_two_lists() {
         let xs: List<i32> = ls![1, 2 ,3];
         let ys: List<i32> = ls![4, 5, 6];
-        let newlist = xs.clone().concat(ys);
+        let newlist = xs.concat(ys);
         assert_eq!(ls![1, 2, 3, 4, 5, 6], newlist);
     }
 }
@@ -271,7 +271,7 @@ pub mod ls_foldl {
     #[test]
     fn it_sums_an_empty_list() {
         let list: List<i32> = ls![];
-        let newlist = list.clone().foldl(|a, b| a + b, 0);
+        let newlist = list.foldl(|a, b| a + b, 0);
         assert_eq!(newlist, 0);
     }
 

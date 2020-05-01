@@ -28,7 +28,7 @@ impl<T: Clone> From<Iter<'_, T>> for List<T> {
 }
 
 impl<T: Clone> From<&[T]> for List<T> {
-    fn from(array: &[T]) -> Self { List::from(array.iter()).map(|x| x.clone()) }
+    fn from(array: &[T]) -> Self { List::from(array.iter()).map(|x| x) }
 }
 
 impl<T: Eq> List<T> {
