@@ -143,6 +143,26 @@ impl<T: Clone> List<T> {
         }
     }
 
+    fn chop(self, ign: u32) -> Self {
+        if ign == 0 {
+            self
+        } else {
+            match self {
+                Cons(_, tx) => tx.chop(ign - 1),
+                _ => panic!("TODO: meaningful error message"),
+            }
+        }
+    }
+}
+
+impl<T: Ord> List<T>
+where
+    T: Clone,
+{
+    pub fn qsort(self) -> Self {
+        self.qsort_by(|x, y| x.cmp(y))
+    }
+
     pub fn qsort_by(self, cmpfn: impl Fn(&T, &T) -> Ordering + Copy) -> Self {
         match self {
             Nil => self,
@@ -161,11 +181,62 @@ impl<T: Clone> List<T> {
     }
 }
 
+
 impl<T: Ord> List<T>
 where
-    T: Clone,
+    T: Copy,
 {
-    pub fn qsort(self) -> Self {
-        self.qsort_by(|x, y| x.cmp(y))
+    pub fn sort(&self) -> Self {
+        self.sort_by(|x, y| x.cmp(y))
+    }
+
+    pub fn sort_by(&self, cmpfn: impl Fn(&T, &T) -> Ordering + Copy) -> Self {
+        let ln = self.len();
+        if ln <= 1 {
+            return self.clone();
+        }
+        let l1 = self.clone().chop(ln / 2);
+        let l2 = self.clone().reverse().chop(ln - (ln / 2));
+        l1.sort_by(cmpfn).merge(cmpfn, &l2.sort_by(cmpfn))
+    }
+
+    pub fn partition(self, p: fn(T) -> bool) -> (Self, Self) {
+        fn aux<T: Clone + Copy + Eq + Ord>(
+            yes: List<T>,
+            no: List<T>,
+            p: fn(T) -> bool,
+            xs: List<T>,
+        ) -> (List<T>, List<T>) {
+            match xs {
+                Nil => (yes, no),
+                Cons(x, tx) => {
+                    if p(x) {
+                        // By doing aux(Cons(x, Box::new(yes)), no, p, *tx) [efficent]
+                        // We get the yes list in the reverse order, but if
+                        // we want of preserve order we need to append [not efficient]
+                        aux(yes.append(x), no, p, *tx)
+                    } else {
+                        // aux(yes, Cons(x, Box::new(no)), p, *tx)
+                        aux(yes, no.append(x), p, *tx)
+                    }
+                },
+            }
+        };
+        aux(Nil, Nil, p, self)
+    }
+
+    pub fn merge(&self, cmpfn: impl Fn(&T, &T) -> Ordering + Copy, ys: &List<T>) -> Self {
+        match (self, ys) {
+            (Nil, l) => l.clone(),
+            (l, Nil) => l.clone(),
+            (Cons(x, tx), Cons(y, ty)) => {
+                let cmp = cmpfn(x, y);
+                if cmp == Ordering::Equal || cmp == Ordering::Less {
+                    Cons(*x, Box::new(ys.merge(cmpfn, &**tx)))
+                } else {
+                    Cons(*y, Box::new(self.merge(cmpfn, &**ty)))
+                }
+            },
+        }
     }
 }
