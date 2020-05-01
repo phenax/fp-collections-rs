@@ -181,7 +181,6 @@ where
     }
 }
 
-
 impl<T: Ord> List<T>
 where
     T: Copy,
