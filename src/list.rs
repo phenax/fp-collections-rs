@@ -1,5 +1,6 @@
 #![macro_use]
 use std::slice::Iter;
+use std::cmp::Ordering;
 
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub enum List<T> {
@@ -141,21 +142,23 @@ impl<T: Clone> List<T> {
             },
         }
     }
+
+    pub fn qsort_by(self, cmpfn: impl Fn(&T, &T) -> Ordering + Copy) -> Self {
+        match self {
+            Nil => self,
+            Cons(head, tail) => {
+                let smaller = tail.clone().filter(|x| cmpfn(x, &head) == Ordering::Less).qsort_by(cmpfn);
+                let bigger = tail.filter(|x| cmpfn(x, &head) != Ordering::Less).qsort_by(cmpfn);
+
+                smaller.append(head).concat(bigger)
+            },
+        }
+    }
 }
 
 impl<T: Ord> List<T>
 where
     T: Clone,
 {
-    pub fn qsort(self) -> Self {
-        match self {
-            Nil => self,
-            Cons(head, tail) => {
-                let smaller = tail.clone().filter(|x| x < &head).qsort();
-                let bigger = tail.filter(|x| x >= &head).qsort();
-
-                smaller.append(head).concat(bigger)
-            },
-        }
-    }
+    pub fn qsort(self) -> Self { self.qsort_by(|x, y| x.cmp(y)) }
 }

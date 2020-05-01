@@ -327,3 +327,29 @@ pub mod ls_qsort {
         assert_eq!(list.qsort(), ls![1, 6, 12, 12, 23, 32, 99, 200]);
     }
 }
+
+
+pub mod ls_qsort_by {
+    use fp_collections::{list::List, ls};
+    use std::cmp::Ordering;
+
+    fn reverse_sort(a: &i32, b: &i32) -> Ordering { b.cmp(a) }
+
+    #[test]
+    fn it_is_identity_for_sorted_list() {
+        let list = ls![5, 4, 3, 2, 1];
+        assert_eq!(list.clone().qsort_by(reverse_sort), list);
+    }
+
+    #[test]
+    fn it_returns_empty_for_empty_list() {
+        let list: List<i32> = ls![];
+        assert_eq!(list.qsort_by(reverse_sort), ls![]);
+    }
+
+    #[test]
+    fn it_sorts_list() {
+        let list = ls![32, 99, 1, 200, 23, 6, 12, 12];
+        assert_eq!(list.qsort_by(reverse_sort), ls![200, 99, 32, 23, 12, 12, 6, 1]);
+    }
+}
