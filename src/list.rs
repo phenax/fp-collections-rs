@@ -1,4 +1,5 @@
 #![macro_use]
+use std::cmp::Ordering;
 use std::slice::Iter;
 
 #[derive(PartialEq, Eq, Clone, Debug)]
@@ -171,13 +172,17 @@ where
     }
 
     pub fn sort(&self) -> Self {
+        self.sort_by(|x, y| x.cmp(y))
+    }
+
+    pub fn sort_by(&self, cmpfn: impl Fn(&T, &T) -> Ordering + Copy) -> Self {
         let ln = self.len();
         if ln <= 1 {
             return self.clone();
         }
         let l1 = self.clone().chop(ln / 2);
         let l2 = self.clone().reverse().chop(ln - (ln / 2));
-        l1.sort().merge(&l2.sort())
+        l1.sort_by(cmpfn).merge(cmpfn, &l2.sort_by(cmpfn))
     }
 
     pub fn partition(self, p: fn(T) -> bool) -> (Self, Self) {
@@ -205,15 +210,16 @@ where
         aux(Nil, Nil, p, self)
     }
 
-    pub fn merge(&self, ys: &List<T>) -> Self {
+    pub fn merge(&self, cmpfn: impl Fn(&T, &T) -> Ordering + Copy, ys: &List<T>) -> Self {
         match (self, ys) {
             (Nil, l) => l.clone(),
             (l, Nil) => l.clone(),
             (Cons(x, tx), Cons(y, ty)) => {
-                if x <= y {
-                    Cons(*x, Box::new(ys.merge(&**tx)))
+                let cmp = cmpfn(x, y);
+                if cmp == Ordering::Equal || cmp == Ordering::Less {
+                    Cons(*x, Box::new(ys.merge(cmpfn, &**tx)))
                 } else {
-                    Cons(*y, Box::new(self.merge(&**ty)))
+                    Cons(*y, Box::new(self.merge(cmpfn, &**ty)))
                 }
             }
         }

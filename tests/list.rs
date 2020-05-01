@@ -313,33 +313,33 @@ pub mod ls_merge {
     fn it_merge_empty_lists() {
         let l1: List<i8> = ls![];
         let l2: List<i8> = ls![];
-        assert_eq!(ls![], l1.merge(&l2))
+        assert_eq!(ls![], l1.merge(|x, y| x.cmp(y), &l2))
     }
 
     #[test]
     fn it_merge_list_and_empty_list() {
         let l1: List<i8> = ls![1, 2, 3];
         let l2: List<i8> = ls![];
-        assert_eq!(ls![1, 2, 3], l1.merge(&l2));
+        assert_eq!(ls![1, 2, 3], l1.merge(|x, y| x.cmp(y), &l2));
 
         let l1: List<i8> = ls![];
         let l2: List<i8> = ls![4, 5, 6];
-        assert_eq!(ls![4, 5, 6], l1.merge(&l2));
+        assert_eq!(ls![4, 5, 6], l1.merge(|x, y| x.cmp(y), &l2));
     }
 
     #[test]
     fn it_merge_lists() {
         let l1: List<i8> = ls![1, 2, 3];
         let l2: List<i8> = ls![4, 5, 6];
-        assert_eq!(ls![1, 2, 3, 4, 5, 6], l1.merge(&l2));
+        assert_eq!(ls![1, 2, 3, 4, 5, 6], l1.merge(|x, y| x.cmp(y), &l2));
 
         let l1: List<i8> = ls![1, 2];
         let l2: List<i8> = ls![4, 5, 6];
-        assert_eq!(ls![1, 2, 4, 5, 6], l1.merge(&l2));
+        assert_eq!(ls![1, 2, 4, 5, 6], l1.merge(|x, y| x.cmp(y), &l2));
 
         let l1: List<i8> = ls![1, 2, 3];
         let l2: List<i8> = ls![5, 6];
-        assert_eq!(ls![1, 2, 3, 5, 6], l1.merge(&l2));
+        assert_eq!(ls![1, 2, 3, 5, 6], l1.merge(|x, y| x.cmp(y), &l2));
     }
 }
 
