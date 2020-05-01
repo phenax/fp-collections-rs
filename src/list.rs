@@ -204,9 +204,9 @@ where
             (l, Nil) => l.clone(),
             (Cons(x, tx), Cons(y, ty)) => {
                 if x <= y {
-                    Cons(x.clone(), Box::new(ys.merge(&**tx)))
+                    Cons(*x, Box::new(ys.merge(&**tx)))
                 } else {
-                    Cons(y.clone(), Box::new(self.merge(&**ty)))
+                    Cons(*y, Box::new(self.merge(&**ty)))
                 }
             }
         }
