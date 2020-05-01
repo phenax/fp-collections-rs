@@ -56,7 +56,8 @@ pub mod constant {
 
 pub mod compose2 {
     use fp_collections::{helpers::*};
-    
+    use fp_collections::{list::{List}, ls};
+
     #[test]
     fn it_composes_same_types() {
         fn add5(x: i32) -> i32 { x + 5 }
@@ -65,5 +66,15 @@ pub mod compose2 {
         let do_math = compose2(add5, mul2);
 
         assert_eq!(do_math(5), 15);
+    }
+
+    #[test]
+    fn it_composes_different_types() {
+        fn to_text(x: i32) -> String { format!("My number is {}", x) }
+        fn to_list(x: String) -> List<String> { ls![x] }
+
+        let execute = compose2(to_list, to_text);
+
+        assert_eq!(execute(666), ls![String::from("My number is 666")]);
     }
 }
