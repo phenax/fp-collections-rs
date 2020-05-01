@@ -38,10 +38,14 @@ impl<T: Eq> List<T> {
     pub fn null(&self) -> bool { self.is_empty() }
 
     pub fn len(&self) -> u32 {
-        match *self {
-            Nil => 0,
-            Cons(_, ref tail) => 1 + tail.len(),
-        }
+        fn aux<T>(xs: &List<T>, size: u32) -> u32 {
+            match *xs {
+                Nil => size,
+                Cons(_, ref tail) => aux(tail, size + 1),
+            }
+        };
+
+        aux(self, 0)
     }
 }
 
@@ -55,9 +59,9 @@ impl<T: Clone> List<T> {
         }
     }
 
-    pub fn concat(self, other: &Self) -> Self {
+    pub fn concat(self, other: Self) -> Self {
         match self {
-            Nil => other.clone(),
+            Nil => other,
             Cons(head, tail) => tail.concat(other).prepend(head),
         }
     }

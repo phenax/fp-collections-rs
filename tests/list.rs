@@ -194,18 +194,34 @@ pub mod ls_concat {
     use fp_collections::{list::{List}, ls};
 
     #[test]
-    fn it_concats_empty_list() {
-        let empty: List<u8> = ls![];
-        assert_eq!(empty.concat(&ls![]), ls![]);
-        assert_eq!(ls![].concat(&ls![1, 2, 3]), ls![1, 2, 3]);
-        assert_eq!(ls![1, 2, 3].concat(&ls![]), ls![1, 2, 3]);
+    fn it_concat_two_empty_lists() {
+        let xs: List<i32> = ls![];
+        let ys: List<i32> = ls![];
+        let newlist = xs.clone().concat(ys);
+        assert_eq!(ls![], newlist);
     }
 
     #[test]
-    fn it_concats_lists() {
-        let list = ls![1, 2, 3, 4, 5];
-        let list2 = ls![6, 7, 8, 9, 10];
-        assert_eq!(list.concat(&list2), ls![1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    fn it_concat_empty_list_list() {
+        let xs: List<i32> = ls![];
+        let ys: List<i32> = ls![1, 2, 3];
+        let newlist = xs.clone().concat(ys);
+        assert_eq!(ls![1, 2, 3], newlist);
+    }
+
+    #[test]
+    fn it_concat_list_and_empty_list() {
+        let xs: List<i32> = ls![1, 2, 3];
+        let ys: List<i32> = ls![];
+        let newlist = xs.clone().concat(ys);
+        assert_eq!(ls![1, 2, 3], newlist);
+    }
+        #[test]
+    fn it_concat_two_lists() {
+        let xs: List<i32> = ls![1, 2 ,3];
+        let ys: List<i32> = ls![4, 5, 6];
+        let newlist = xs.clone().concat(ys);
+        assert_eq!(ls![1, 2, 3, 4, 5, 6], newlist);
     }
 }
 
