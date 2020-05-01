@@ -312,7 +312,7 @@ pub mod ls_qsort {
     #[test]
     fn it_is_identity_for_sorted_list() {
         let list = ls![1, 2, 3, 4, 5];
-        assert_eq!(list.qsort(), list);
+        assert_eq!(list.clone().qsort(), list);
     }
 
     #[test]
@@ -324,7 +324,7 @@ pub mod ls_qsort {
     #[test]
     fn it_sorts_list() {
         let list: List<u8> = ls![32, 99, 1, 200, 23, 6, 12, 12];
-        assert_eq!(list.qsort(), ls![]);
+        assert_eq!(list.qsort(), ls![1, 6, 12, 12, 23, 32, 99, 200]);
     }
 }
 
