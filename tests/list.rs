@@ -327,4 +327,3 @@ pub mod ls_qsort {
         assert_eq!(list.qsort(), ls![1, 6, 12, 12, 23, 32, 99, 200]);
     }
 }
-

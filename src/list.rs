@@ -143,16 +143,19 @@ impl<T: Clone> List<T> {
     }
 }
 
-impl<T: Ord> List<T> where T: Clone {
+impl<T: Ord> List<T>
+where
+    T: Clone,
+{
     pub fn qsort(self) -> Self {
         match self {
             Nil => self,
             Cons(head, tail) => {
                 let smaller = tail.clone().filter(|x| x < &head).qsort();
-                let bigger = tail.clone().filter(|x| x >= &head).qsort();
+                let bigger = tail.filter(|x| x >= &head).qsort();
 
                 smaller.append(head).concat(bigger)
-            }
+            },
         }
     }
 }
