@@ -6,7 +6,7 @@ A functional collections library for rust
 
 Add the following in your Cargo.toml in the dependencies
 ```
-fp-collections = "0.0.0"
+fp-collections = "0.0.1"
 ```
 
 Or if you are using [cargo-edit](https://github.com/killercup/cargo-edit), just run
