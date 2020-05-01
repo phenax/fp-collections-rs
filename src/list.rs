@@ -16,7 +16,7 @@ macro_rules! ls[
     [$x:expr, $($xs:expr),+] => (List::Cons($x, Box::new(ls![$($xs),+])));
 ];
 
-impl<T: Clone + Eq + Copy> From<Iter<'_, T>> for List<T> {
+impl<T: Clone> From<Iter<'_, T>> for List<T> {
     fn from(iter: Iter<'_, T>) -> Self {
         let mut list = ls![];
         for x in iter {
@@ -27,12 +27,16 @@ impl<T: Clone + Eq + Copy> From<Iter<'_, T>> for List<T> {
     }
 }
 
-impl<T: Clone + Eq + Copy> From<&[T]> for List<T> {
-    fn from(array: &[T]) -> Self { List::from(array.iter()).map(|x| x.clone()) }
+impl<T: Clone> From<&[T]> for List<T> {
+    fn from(array: &[T]) -> Self {
+        List::from(array.iter()).map(|x| x)
+    }
 }
 
-impl<T: Clone + Eq + Copy> List<T> {
-    pub fn new<A>() -> Self { Nil }
+impl<T: Eq> List<T> {
+    pub fn new<A>() -> Self {
+        Nil
+    }
 
     pub fn is_empty(&self) -> bool {
         self.eq(&Nil)
@@ -51,8 +55,12 @@ impl<T: Clone + Eq + Copy> List<T> {
 
         aux(self, 0)
     }
+}
 
-    pub fn prepend(self, x: T) -> Self { Cons(x, Box::new(self)) }
+impl<T: Clone> List<T> {
+    pub fn prepend(self, x: T) -> Self {
+        Cons(x, Box::new(self))
+    }
 
     pub fn append(self, item: T) -> Self {
         match self {
@@ -134,16 +142,6 @@ impl<T: Clone + Eq + Copy> List<T> {
         }
     }
 
-    pub fn sort(&self, cmpfn: fn(T, T) -> i8) -> Self {
-        let ln = self.len();
-        if ln <= 1 {
-            return self.clone()
-        }
-        let l1 = self.clone().chop(ln / 2);
-        let l2 = self.clone().reverse().chop(ln - (ln / 2));
-        l1.sort(cmpfn).merge(cmpfn, &l2.sort(cmpfn))
-    }
-
     fn chop(self, ign: u32) -> Self {
         if ign == 0 {
             self
@@ -154,9 +152,36 @@ impl<T: Clone + Eq + Copy> List<T> {
             }
         }
     }
+}
+
+impl<T: Ord> List<T>
+where
+    T: Clone + Copy,
+{
+    pub fn qsort(self) -> Self {
+        match self {
+            Nil => self,
+            Cons(head, tail) => {
+                let smaller = tail.clone().filter(|x| x < &head).qsort();
+                let bigger = tail.filter(|x| x >= &head).qsort();
+
+                smaller.append(head).concat(bigger)
+            },
+        }
+    }
+
+    pub fn sort(&self) -> Self {
+        let ln = self.len();
+        if ln <= 1 {
+            return self.clone()
+        }
+        let l1 = self.clone().chop(ln / 2);
+        let l2 = self.clone().reverse().chop(ln - (ln / 2));
+        l1.sort().merge(&l2.sort())
+    }
 
     pub fn partition(self, p: fn(T) -> bool) -> (Self, Self) {
-        fn aux<T: Clone + Copy + Eq>(yes: List<T>, no: List<T>, p: fn(T) -> bool, xs: List<T>) -> (List<T>, List<T>) {
+        fn aux<T: Clone + Copy + Eq + Ord>(yes: List<T>, no: List<T>, p: fn(T) -> bool, xs: List<T>) -> (List<T>, List<T>) {
             match xs {
                 Nil => (yes, no),
                 Cons(x, tx) => if p(x) { 
@@ -172,35 +197,18 @@ impl<T: Clone + Eq + Copy> List<T> {
         };
         aux(Nil, Nil, p, self)
     }
-    pub fn merge(&self, cmpfn: fn(T, T) -> i8, ys: &List<T>) -> Self {
+    
+    pub fn merge(&self, ys: &List<T>) -> Self {
         match (self, ys) {
             (Nil, l) => l.clone(),
             (l, Nil) => l.clone(),
             (Cons(x, tx), Cons(y, ty)) => {
-                let cmp = cmpfn(x.clone(), y.clone());
-                if cmp <= 0 {
-                    Cons(x.clone(), Box::new(ys.merge(cmpfn, &**tx)))
+                if x <= y {
+                    Cons(x.clone(), Box::new(ys.merge(&**tx)))
                 } else {
-                    Cons(y.clone(), Box::new(self.merge(cmpfn, &**ty)))
+                    Cons(y.clone(), Box::new(self.merge(&**ty)))
                 }
             }
-        }
-    }
-}
-
-impl<T: Ord> List<T>
-where
-    T: Clone,
-{
-    pub fn qsort(self) -> Self {
-        match self {
-            Nil => self,
-            Cons(head, tail) => {
-                let smaller = tail.clone().filter(|x| x < &head).qsort();
-                let bigger = tail.filter(|x| x >= &head).qsort();
-
-                smaller.append(head).concat(bigger)
-            },
         }
     }
 }
