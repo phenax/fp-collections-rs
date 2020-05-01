@@ -271,8 +271,8 @@ pub mod ls_foldl {
     #[test]
     fn it_sums_an_empty_list() {
         let list: List<i32> = ls![];
-        let newlist = list.clone().filter(|x| x % 2 == 0);
-        assert_eq!(list, newlist);
+        let newlist = list.clone().foldl(|a, b| a + b, 0);
+        assert_eq!(newlist, 0);
     }
 
     #[test]
