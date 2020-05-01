@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-rustup update stable;
+# rustup update stable;
 
-rustup toolchain install nightly && \
-rustup component add clippy --toolchain=nightly;
+# rustup toolchain install nightly && \
 
 cargo install cargo-cmd;
 
