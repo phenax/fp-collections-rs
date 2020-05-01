@@ -139,7 +139,7 @@ impl<T: Clone> List<T> {
                 } else {
                     tail.filter(func)
                 }
-            }
+            },
         }
     }
 
@@ -157,7 +157,7 @@ impl<T: Clone> List<T> {
 
 impl<T: Ord> List<T>
 where
-    T: Clone + Copy,
+    T: Clone,
 {
     pub fn qsort(self) -> Self {
         match self {
@@ -167,10 +167,15 @@ where
                 let bigger = tail.filter(|x| x >= &head).qsort();
 
                 smaller.append(head).concat(bigger)
-            }
+            },
         }
     }
+}
 
+impl<T: Ord> List<T>
+where
+    T: Copy,
+{
     pub fn sort(&self) -> Self {
         self.sort_by(|x, y| x.cmp(y))
     }
@@ -204,7 +209,7 @@ where
                         // aux(yes, Cons(x, Box::new(no)), p, *tx)
                         aux(yes, no.append(x), p, *tx)
                     }
-                }
+                },
             }
         };
         aux(Nil, Nil, p, self)
@@ -221,7 +226,7 @@ where
                 } else {
                     Cons(*y, Box::new(self.merge(cmpfn, &**ty)))
                 }
-            }
+            },
         }
     }
 }
