@@ -78,3 +78,30 @@ pub mod compose2 {
         assert_eq!(execute(666), ls![String::from("My number is 666")]);
     }
 }
+
+pub mod compose {
+    use fp_collections::{helpers::*, compose};
+    use fp_collections::{list::{List}, ls};
+
+    #[test]
+    fn it_composes_same_types() {
+        fn add5(x: i32) -> i32 { x + 5 }
+        fn mul2(x: i32) -> i32 { x * 2 }
+        fn sub1(x: i32) -> i32 { x - 1 }
+
+        let do_math = compose!(sub1, add5, mul2);
+
+        assert_eq!(do_math(5), 14);
+    }
+
+    #[test]
+    fn it_composes_different_types() {
+        fn to_text(x: i32) -> String { format!("My number is {}", x) }
+        fn to_list(x: String) -> List<String> { ls![x, "hello".to_string(), "world".to_string()] }
+        fn map_to_5(x: List<String>) -> List<i32> { x.map(|_| 5) }
+
+        let execute = compose!(map_to_5, to_list, to_text);
+
+        assert_eq!(execute(666), ls![5, 5, 5]);
+    }
+}
