@@ -328,12 +328,13 @@ pub mod ls_qsort {
     }
 }
 
-
 pub mod ls_qsort_by {
     use fp_collections::{list::List, ls};
     use std::cmp::Ordering;
 
-    fn reverse_sort(a: &i32, b: &i32) -> Ordering { b.cmp(a) }
+    fn reverse_sort(a: &i32, b: &i32) -> Ordering {
+        b.cmp(a)
+    }
 
     #[test]
     fn it_is_identity_for_sorted_list() {
@@ -350,6 +351,9 @@ pub mod ls_qsort_by {
     #[test]
     fn it_sorts_list() {
         let list = ls![32, 99, 1, 200, 23, 6, 12, 12];
-        assert_eq!(list.qsort_by(reverse_sort), ls![200, 99, 32, 23, 12, 12, 6, 1]);
+        assert_eq!(
+            list.qsort_by(reverse_sort),
+            ls![200, 99, 32, 23, 12, 12, 6, 1]
+        );
     }
 }
