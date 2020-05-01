@@ -104,7 +104,7 @@ impl<T: Clone> List<T> {
             Cons(x, tail) => tail.foldl(func, func(init, x)),
         }
     }
- 
+
     pub fn foldr<R>(self, func: impl Fn(T, R) -> R + Copy, init: R) -> R {
         match self {
             Nil => init,

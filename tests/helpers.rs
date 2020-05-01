@@ -1,7 +1,6 @@
-
 pub mod identity {
-    use fp_collections::{helpers::*};
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::helpers::*;
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_returns_what_it_gets() {
@@ -27,8 +26,8 @@ pub mod identity {
 }
 
 pub mod constant {
-    use fp_collections::{helpers::*};
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::helpers::*;
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_returns_a_getter() {
@@ -48,20 +47,24 @@ pub mod constant {
     // TODO: Add ability to use in a pointfree way
     // #[test]
     // fn it_can_be_used_pointfree() {
-        // let list = ls![1, 2, 3];
-        // let result = list.clone().map(constant(5));
-        // assert_eq!(list, ls![5, 5, 5]);
+    // let list = ls![1, 2, 3];
+    // let result = list.clone().map(constant(5));
+    // assert_eq!(list, ls![5, 5, 5]);
     // }
 }
 
 pub mod compose2 {
-    use fp_collections::{helpers::*};
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::helpers::*;
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_composes_same_types() {
-        fn add5(x: i32) -> i32 { x + 5 }
-        fn mul2(x: i32) -> i32 { x * 2 }
+        fn add5(x: i32) -> i32 {
+            x + 5
+        }
+        fn mul2(x: i32) -> i32 {
+            x * 2
+        }
 
         let do_math = compose2(add5, mul2);
 
@@ -70,8 +73,12 @@ pub mod compose2 {
 
     #[test]
     fn it_composes_different_types() {
-        fn to_text(x: i32) -> String { format!("My number is {}", x) }
-        fn to_list(x: String) -> List<String> { ls![x] }
+        fn to_text(x: i32) -> String {
+            format!("My number is {}", x)
+        }
+        fn to_list(x: String) -> List<String> {
+            ls![x]
+        }
 
         let execute = compose2(to_list, to_text);
 
@@ -80,14 +87,20 @@ pub mod compose2 {
 }
 
 pub mod compose {
-    use fp_collections::{helpers::*, compose};
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{compose, helpers::*};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_composes_same_types() {
-        fn add5(x: i32) -> i32 { x + 5 }
-        fn mul2(x: i32) -> i32 { x * 2 }
-        fn sub1(x: i32) -> i32 { x - 1 }
+        fn add5(x: i32) -> i32 {
+            x + 5
+        }
+        fn mul2(x: i32) -> i32 {
+            x * 2
+        }
+        fn sub1(x: i32) -> i32 {
+            x - 1
+        }
 
         let do_math = compose!(sub1, add5, mul2);
 
@@ -96,9 +109,15 @@ pub mod compose {
 
     #[test]
     fn it_composes_different_types() {
-        fn to_text(x: i32) -> String { format!("My number is {}", x) }
-        fn to_list(x: String) -> List<String> { ls![x, "hello".to_string(), "world".to_string()] }
-        fn map_to_5(x: List<String>) -> List<i32> { x.map(|_| 5) }
+        fn to_text(x: i32) -> String {
+            format!("My number is {}", x)
+        }
+        fn to_list(x: String) -> List<String> {
+            ls![x, "hello".to_string(), "world".to_string()]
+        }
+        fn map_to_5(x: List<String>) -> List<i32> {
+            x.map(|_| 5)
+        }
 
         let execute = compose!(map_to_5, to_list, to_text);
 
