@@ -11,9 +11,9 @@ pub use List::{Cons, Nil};
 
 #[macro_export]
 macro_rules! ls[
-  []                       => (List::Nil);
-  [$x:expr]                => (List::Cons($x, Box::new(List::Nil)));
-  [$x:expr, $($xs:expr),+] => (List::Cons($x, Box::new(ls![$($xs),+])));
+    []                       => (List::Nil);
+    [$x:expr]                => (List::Cons($x, Box::new(List::Nil)));
+    [$x:expr, $($xs:expr),+] => (List::Cons($x, Box::new(ls![$($xs),+])));
 ];
 
 impl<T: Clone> From<Iter<'_, T>> for List<T> {
@@ -98,14 +98,14 @@ impl<T: Clone> List<T> {
         }
     }
 
-    pub fn foldl<R>(self, func: fn(R, T) -> R, init: R) -> R {
+    pub fn foldl<R>(self, func: impl Fn(R, T) -> R + Copy, init: R) -> R {
         match self {
             Nil => init,
             Cons(x, tail) => tail.foldl(func, func(init, x)),
         }
     }
 
-    pub fn foldr<R>(self, func: fn(T, R) -> R, init: R) -> R {
+    pub fn foldr<R>(self, func: impl Fn(T, R) -> R + Copy, init: R) -> R {
         match self {
             Nil => init,
             Cons(x, tail) => func(x, tail.foldr(func, init)),
@@ -122,14 +122,14 @@ impl<T: Clone> List<T> {
         aux(Nil, self)
     }
 
-    pub fn map<R>(self, func: fn(x: T) -> R) -> List<R> {
+    pub fn map<R>(self, func: impl Fn(T) -> R + Copy) -> List<R> {
         match self {
             Nil => Nil,
             Cons(x, tail) => Cons(func(x), Box::new(tail.map(func))),
         }
     }
 
-    pub fn filter(self, func: fn(&T) -> bool) -> Self {
+    pub fn filter(self, func: impl Fn(&T) -> bool + Copy) -> Self {
         match self {
             Nil => self,
             Cons(x, tail) => {
@@ -138,6 +138,23 @@ impl<T: Clone> List<T> {
                 } else {
                     tail.filter(func)
                 }
+            },
+        }
+    }
+}
+
+impl<T: Ord> List<T>
+where
+    T: Clone,
+{
+    pub fn qsort(self) -> Self {
+        match self {
+            Nil => self,
+            Cons(head, tail) => {
+                let smaller = tail.clone().filter(|x| x < &head).qsort();
+                let bigger = tail.filter(|x| x >= &head).qsort();
+
+                smaller.append(head).concat(bigger)
             },
         }
     }
