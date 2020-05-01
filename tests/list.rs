@@ -282,9 +282,8 @@ pub mod ls_foldl {
     }
 }
 
-
 pub mod ls_foldr {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_sums_a_list() {
@@ -295,7 +294,7 @@ pub mod ls_foldr {
 }
 
 pub mod ls_reverse {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_reverses_list() {
@@ -306,4 +305,3 @@ pub mod ls_reverse {
         assert_eq!(ls![], list.reverse())
     }
 }
-
