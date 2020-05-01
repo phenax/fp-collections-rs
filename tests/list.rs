@@ -1,4 +1,4 @@
-use fp_collections::{list::{List}, ls};
+use fp_collections::{list::List, ls};
 
 #[test]
 fn it_creates_list() {
@@ -8,7 +8,7 @@ fn it_creates_list() {
 }
 
 pub mod list_from {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_returns_list_from_array() {
@@ -30,7 +30,7 @@ pub mod list_from {
 }
 
 pub mod ls_clone {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_clone_list_correctly() {
@@ -41,7 +41,7 @@ pub mod ls_clone {
 }
 
 pub mod ls_eq {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_returns_false_for_different_lengths() {
@@ -66,7 +66,7 @@ pub mod ls_eq {
 }
 
 pub mod ls_is_empty {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_returns_true_for_empty_list() {
@@ -82,9 +82,8 @@ pub mod ls_is_empty {
     }
 }
 
-
 pub mod ls_get {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_returns_some_item_at_index_if_it_exists() {
@@ -109,13 +108,14 @@ pub mod ls_get {
     #[test]
     fn it_returns_none_if_it_doesnt_exists() {
         let list = ls![5, 4, 3, 2, 1];
-        if list.get(5).is_some() { panic!("Expected None") }
+        if list.get(5).is_some() {
+            panic!("Expected None")
+        }
     }
 }
 
-
 pub mod ls_head {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_returns_some_head_if_it_exists() {
@@ -129,12 +129,14 @@ pub mod ls_head {
     #[test]
     fn it_returns_none_if_it_doesnt_exists() {
         let list: List<i32> = ls![];
-        if list.head().is_some() { panic!("Expected None") }
+        if list.head().is_some() {
+            panic!("Expected None")
+        }
     }
 }
 
 pub mod ls_tail {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_returns_some_head_if_it_exists() {
@@ -149,9 +151,8 @@ pub mod ls_tail {
     }
 }
 
-
 pub mod ls_prepend {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_prepends_an_item_to_an_empty_list() {
@@ -171,7 +172,7 @@ pub mod ls_prepend {
 }
 
 pub mod ls_append {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_prepends_an_item_to_an_empty_list() {
@@ -191,7 +192,7 @@ pub mod ls_append {
 }
 
 pub mod ls_concat {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_concat_two_empty_lists() {
@@ -216,9 +217,9 @@ pub mod ls_concat {
         let newlist = xs.concat(ys);
         assert_eq!(ls![1, 2, 3], newlist);
     }
-        #[test]
+    #[test]
     fn it_concat_two_lists() {
-        let xs: List<i32> = ls![1, 2 ,3];
+        let xs: List<i32> = ls![1, 2, 3];
         let ys: List<i32> = ls![4, 5, 6];
         let newlist = xs.concat(ys);
         assert_eq!(ls![1, 2, 3, 4, 5, 6], newlist);
@@ -226,7 +227,7 @@ pub mod ls_concat {
 }
 
 pub mod ls_map {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_maps_an_empty_list() {
@@ -244,9 +245,8 @@ pub mod ls_map {
     }
 }
 
-
 pub mod ls_filter {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_filters_an_empty_list() {
@@ -264,9 +264,8 @@ pub mod ls_filter {
     }
 }
 
-
 pub mod ls_foldl {
-    use fp_collections::{list::{List}, ls};
+    use fp_collections::{list::List, ls};
 
     #[test]
     fn it_sums_an_empty_list() {
@@ -282,4 +281,3 @@ pub mod ls_foldl {
         assert_eq!(result, 55);
     }
 }
-
