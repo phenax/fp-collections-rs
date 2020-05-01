@@ -92,6 +92,23 @@ impl<T: Clone> List<T> {
             Cons(x, tail) => tail.foldl(func, func(init, x)),
         }
     }
+ 
+    pub fn foldr<R>(self, func: fn(T, R) -> R, init: R) -> R {
+        match self {
+            Nil => init,
+            Cons(x, tail) => func(x, tail.foldr(func, init)),
+        }
+    }
+
+    pub fn reverse(self) -> List<T> {
+        fn aux<T>(xs: List<T>, ys: List<T>) -> List<T> {
+            match ys {
+                Nil => xs,
+                Cons(y, tail) => aux(Cons(y, Box::new(xs)), *tail)
+            }
+        };
+        aux(Nil, self)
+    }
 
     pub fn map<R>(self, func: fn(x: T) -> R) -> List<R> {
         match self {
