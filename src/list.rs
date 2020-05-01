@@ -141,4 +141,15 @@ impl<T: Clone> List<T> {
             },
         }
     }
+
+    pub fn qsort(self) -> Self {
+        match self {
+            Nil => self,
+            Cons(head, tail) => {
+                let smaller = tail.filter(|x| x < head).qsort();
+                let bigger = tail.filter(|x| x >= head).qsort();
+                return smaller.append(head).concat(bigger);
+            }
+        }
+    }
 }
