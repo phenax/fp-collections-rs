@@ -86,14 +86,14 @@ impl<T: Clone> List<T> {
         }
     }
 
-    pub fn foldl<R>(self, func: fn(R, T) -> R, init: R) -> R {
+    pub fn foldl<R>(self, func: impl Fn(R, T) -> R + Copy, init: R) -> R {
         match self {
             Nil => init,
             Cons(x, tail) => tail.foldl(func, func(init, x)),
         }
     }
  
-    pub fn foldr<R>(self, func: fn(T, R) -> R, init: R) -> R {
+    pub fn foldr<R>(self, func: impl Fn(T, R) -> R + Copy, init: R) -> R {
         match self {
             Nil => init,
             Cons(x, tail) => func(x, tail.foldr(func, init)),
@@ -110,14 +110,14 @@ impl<T: Clone> List<T> {
         aux(Nil, self)
     }
 
-    pub fn map<R>(self, func: fn(x: T) -> R) -> List<R> {
+    pub fn map<R>(self, func: impl Fn(T) -> R + Copy) -> List<R> {
         match self {
             Nil => Nil,
             Cons(x, tail) => Cons(func(x), Box::new(tail.map(func))),
         }
     }
 
-    pub fn filter(self, func: fn(&T) -> bool) -> Self {
+    pub fn filter(self, func: impl Fn(&T) -> bool + Copy) -> Self {
         match self {
             Nil => self,
             Cons(x, tail) => if func(&x) {
