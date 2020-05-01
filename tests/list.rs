@@ -281,3 +281,29 @@ pub mod ls_foldl {
         assert_eq!(result, 55);
     }
 }
+
+
+pub mod ls_foldr {
+    use fp_collections::{list::{List}, ls};
+
+    #[test]
+    fn it_sums_a_list() {
+        let list = ls![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        let result = list.foldr(|a, b| a + b, 0);
+        assert_eq!(result, 55);
+    }
+}
+
+pub mod ls_reverse {
+    use fp_collections::{list::{List}, ls};
+
+    #[test]
+    fn it_reverses_list() {
+        let list = ls![1, 2, 3, 4, 5];
+        assert_eq!(ls![5, 4, 3, 2, 1], list.reverse());
+
+        let list: List<u8> = ls![];
+        assert_eq!(ls![], list.reverse())
+    }
+}
+
