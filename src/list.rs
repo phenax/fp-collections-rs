@@ -1,5 +1,5 @@
 #![macro_use]
-use std::slice::{Iter};
+use std::slice::Iter;
 
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub enum List<T> {
@@ -28,14 +28,22 @@ impl<T: Clone> From<Iter<'_, T>> for List<T> {
 }
 
 impl<T: Clone> From<&[T]> for List<T> {
-    fn from(array: &[T]) -> Self { List::from(array.iter()).map(|x| x) }
+    fn from(array: &[T]) -> Self {
+        List::from(array.iter()).map(|x| x)
+    }
 }
 
 impl<T: Eq> List<T> {
-    pub fn new<A>() -> Self { Nil }
+    pub fn new<A>() -> Self {
+        Nil
+    }
 
-    pub fn is_empty(&self) -> bool { self.eq(&Nil) }
-    pub fn null(&self) -> bool { self.is_empty() }
+    pub fn is_empty(&self) -> bool {
+        self.eq(&Nil)
+    }
+    pub fn null(&self) -> bool {
+        self.is_empty()
+    }
 
     pub fn len(&self) -> u32 {
         fn aux<T>(xs: &List<T>, size: u32) -> u32 {
@@ -50,7 +58,9 @@ impl<T: Eq> List<T> {
 }
 
 impl<T: Clone> List<T> {
-    pub fn prepend(self, x: T) -> Self { Cons(x, Box::new(self)) }
+    pub fn prepend(self, x: T) -> Self {
+        Cons(x, Box::new(self))
+    }
 
     pub fn append(self, item: T) -> Self {
         match self {
@@ -74,7 +84,9 @@ impl<T: Clone> List<T> {
         }
     }
 
-    pub fn head(&self) -> Option<&T> { self.get(0) }
+    pub fn head(&self) -> Option<&T> {
+        self.get(0)
+    }
 
     pub fn tail(&self) -> Self {
         match self {
@@ -104,7 +116,7 @@ impl<T: Clone> List<T> {
         fn aux<T>(xs: List<T>, ys: List<T>) -> List<T> {
             match ys {
                 Nil => xs,
-                Cons(y, tail) => aux(Cons(y, Box::new(xs)), *tail)
+                Cons(y, tail) => aux(Cons(y, Box::new(xs)), *tail),
             }
         };
         aux(Nil, self)
@@ -120,11 +132,13 @@ impl<T: Clone> List<T> {
     pub fn filter(self, func: impl Fn(&T) -> bool + Copy) -> Self {
         match self {
             Nil => self,
-            Cons(x, tail) => if func(&x) {
-                Cons(x, Box::new(tail.filter(func)))
-            } else {
-                tail.filter(func)
-            }
+            Cons(x, tail) => {
+                if func(&x) {
+                    Cons(x, Box::new(tail.filter(func)))
+                } else {
+                    tail.filter(func)
+                }
+            },
         }
     }
 }
