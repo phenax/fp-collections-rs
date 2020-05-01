@@ -7,6 +7,28 @@ fn it_creates_list() {
     assert_eq!(debug_str, "Cons(1, Cons(2, Nil))");
 }
 
+pub mod list_from {
+    use fp_collections::{list::{List}, ls};
+
+    #[test]
+    fn it_returns_list_from_array() {
+        let arr: &[i32] = &[0, 1, 2, 3];
+        assert_eq!(List::from(arr), ls![0, 1, 2, 3]);
+
+        let arr: &[i32] = &[];
+        assert_eq!(List::from(arr), ls![]);
+    }
+
+    #[test]
+    fn it_returns_list_from_iterator() {
+        let arr: &[i32] = &[0, 1, 2, 3];
+        assert_eq!(List::from(arr.iter()), ls![0, 1, 2, 3]);
+
+        let arr: &[i32] = &[];
+        assert_eq!(List::from(arr.iter()), ls![]);
+    }
+}
+
 pub mod ls_clone {
     use fp_collections::{list::{List}, ls};
 

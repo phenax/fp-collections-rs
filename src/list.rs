@@ -1,4 +1,5 @@
 #![macro_use]
+use std::slice::{Iter};
 
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub enum List<T> {
@@ -14,6 +15,21 @@ macro_rules! ls[
   [$x:expr]                => (List::Cons($x, Box::new(List::Nil)));
   [$x:expr, $($xs:expr),+] => (List::Cons($x, Box::new(ls![$($xs),+])));
 ];
+
+impl<T: Clone> From<Iter<'_, T>> for List<T> {
+    fn from(iter: Iter<'_, T>) -> Self {
+        let mut list = ls![];
+        for x in iter {
+            list = list.append(x.clone());
+        }
+
+        list
+    }
+}
+
+impl<T: Clone> From<&[T]> for List<T> {
+    fn from(array: &[T]) -> Self { List::from(array.iter()).map(|x| x.clone()) }
+}
 
 impl<T: Eq> List<T> {
     pub fn new<A>() -> Self { Nil }
