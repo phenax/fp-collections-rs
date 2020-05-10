@@ -153,15 +153,6 @@ impl<T: Clone> List<T> {
             }
         }
     }
-}
-
-impl<T: Ord> List<T>
-where
-    T: Clone,
-{
-    pub fn qsort(self) -> Self {
-        self.qsort_by(|x, y| x.cmp(y))
-    }
 
     pub fn qsort_by(self, cmpfn: impl Fn(&T, &T) -> Ordering + Copy) -> Self {
         match self {
@@ -181,10 +172,15 @@ where
     }
 }
 
-impl<T: Ord> List<T>
+impl<T> List<T>
 where
     T: Copy,
+    T: Ord,
 {
+    pub fn qsort(self) -> Self {
+        self.qsort_by(|x, y| x.cmp(y))
+    }
+
     pub fn sort(&self) -> Self {
         self.sort_by(|x, y| x.cmp(y))
     }
