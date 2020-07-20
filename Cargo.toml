@@ -5,14 +5,14 @@ description = "An alternate collections library for rust"
 authors = ["Akshay Nair <phenax5@gmail.com>", "Melwyn Saldanha <melwyn95@gmail.com>"]
 edition = "2018"
 license = "MIT"
-keywords = ["collections", "collection", "list", "linked", "ocaml"]
+keywords = ["collections", "collection", "list", "linked", "set", "ocaml"]
 repository = "https://github.com/phenax/collections"
 readme = "README.md"
 
 # Add scripts (Install cargo-cmd: cargo install cargo-cmd)
 [package.metadata.commands]
-lint = "cargo +nightly clippy && cargo +nightly fmt -- --check"
-fix = "cargo +nightly clippy --fix -Z unstable-options; cargo +nightly fmt"
+lint = "cargo clippy && cargo fmt -- --check"
+fix = "cargo clippy && cargo fmt"
 cov = "cargo test && cargo cmd coverage"
 coverage = "bash .github/workflows/generate-coverage.sh"
 

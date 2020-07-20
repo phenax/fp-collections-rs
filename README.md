@@ -18,4 +18,5 @@ cargo add fp-collections
 ### Structures
 
 * `List` - A functional ocaml-style list implementation
+* `Set` - A functional ocaml-style set implementation (using AVL tree)
 
