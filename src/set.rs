@@ -64,7 +64,7 @@ where
                         ),
                         Set::Empty => Set::Empty,
                     }
-                },
+                }
                 Ordering::Greater => {
                     let root = Set::Node(left, val, Box::new(right.add(x)), h);
                     match root {
@@ -79,7 +79,7 @@ where
                         ),
                         Set::Empty => Set::Empty,
                     }
-                },
+                }
             },
         }
     }
@@ -105,7 +105,7 @@ where
                     Box::new(Set::Node(node_right, parent_val, parent_right, h1)),
                     h2,
                 )
-            },
+            }
             (_, _) => Set::Empty,
         }
     }
@@ -124,7 +124,7 @@ where
                     node_right,
                     h2,
                 )
-            },
+            }
             (_, _) => Set::Empty,
         }
     }
@@ -160,7 +160,7 @@ where
                         }
                     }
                     parent
-                },
+                }
             },
         }
     }
@@ -181,7 +181,7 @@ where
                     vs.push(v);
                     aux(*r, vs);
                     vs
-                },
+                }
             }
         }
 
@@ -216,7 +216,7 @@ where
                             Set::Empty => Set::Empty,
                             Set::Node(l, _, _, _) => Set::balance(root, *l),
                         }
-                    },
+                    }
                 },
                 Ordering::Less => {
                     let root = Set::Node(Box::new(left.clone().remove(x)), val, right, h);
@@ -224,14 +224,14 @@ where
                         Set::Node(l, _, _, _) => Set::balance(root, *l),
                         Set::Empty => Set::Empty,
                     }
-                },
+                }
                 Ordering::Greater => {
                     let root = Set::Node(left, val, Box::new(right.clone().remove(x)), h);
                     match root.clone() {
                         Set::Node(_, _, r, _) => Set::balance(root, *r),
                         Set::Empty => Set::Empty,
                     }
-                },
+                }
             },
         }
     }
