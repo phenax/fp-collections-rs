@@ -2,7 +2,7 @@
 #![macro_use]
 use std::cmp::max;
 use std::cmp::Ordering;
-use std::fmt::{Debug, Display};
+use std::fmt::Debug;
 
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub enum Set<T> {
@@ -42,8 +42,9 @@ impl<T: Eq> Set<T> {
 
 impl<T: Clone> Set<T>
 where
-    T: Ord + Display + Debug, // remove Debug & Display
+    T: Ord,
 {
+    #[allow(clippy::should_implement_trait, clippy::many_single_char_names)]
     pub fn add(self, x: T) -> Self {
         match self.clone() {
             Set::Empty => Set::create_node(x),
@@ -51,7 +52,7 @@ where
                 Ordering::Equal => self,
                 Ordering::Less => {
                     let root = Set::Node(Box::new(left.add(x)), val, right, h);
-                    match root.clone() {
+                    match root {
                         Set::Node(l, v, r, _) => Set::balance(
                             Set::Node(
                                 l.clone(),
@@ -66,7 +67,7 @@ where
                 }
                 Ordering::Greater => {
                     let root = Set::Node(left, val, Box::new(right.add(x)), h);
-                    match root.clone() {
+                    match root {
                         Set::Node(l, v, r, _) => Set::balance(
                             Set::Node(
                                 l.clone(),
@@ -83,8 +84,8 @@ where
         }
     }
 
-    fn height(s: &Box<Set<T>>) -> i64 {
-        match **s {
+    fn height(s: &Set<T>) -> i64 {
+        match *s {
             Set::Node(_, _, _, h) => h,
             Set::Empty => -1,
         }
@@ -168,6 +169,8 @@ where
         Set::Node(Box::new(Set::Empty), x, Box::new(Set::Empty), 0)
     }
 
+    // TODO: fix later
+    #[allow(clippy::wrong_self_convention)]
     pub fn to_vec(self) -> Vec<T> {
         let mut v = vec![];
         fn aux<I>(n: Set<I>, vs: &mut Vec<I>) -> &mut Vec<I> {
@@ -199,7 +202,7 @@ where
     }
 
     pub fn remove(self, x: T) -> Self {
-        match self.clone() {
+        match self {
             Set::Empty => Set::Empty,
             Set::Node(left, val, right, h) => match x.cmp(&val) {
                 Ordering::Equal => match (*left.clone(), *right.clone()) {
@@ -217,7 +220,6 @@ where
                 },
                 Ordering::Less => {
                     let root = Set::Node(Box::new(left.clone().remove(x)), val, right, h);
-                    println!("{:?}", root);
                     match root.clone() {
                         Set::Node(l, _, _, _) => Set::balance(root, *l),
                         Set::Empty => Set::Empty,
@@ -247,9 +249,15 @@ where
 
 impl<T> From<Vec<T>> for Set<T>
 where
-    T: Eq + Clone + Debug + Display + Ord, // remove Debug Display
+    T: Eq + Clone + Ord,
 {
     fn from(xs: Vec<T>) -> Self {
         xs.iter().fold(Set::new(), |s, x| s.add(x.clone()))
+    }
+}
+
+impl<T> Default for Set<T> {
+    fn default() -> Self {
+        Set::Empty
     }
 }
