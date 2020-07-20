@@ -12,7 +12,7 @@ readme = "README.md"
 # Add scripts (Install cargo-cmd: cargo install cargo-cmd)
 [package.metadata.commands]
 lint = "cargo clippy && cargo fmt -- --check"
-fix = "cargo clippy --fix && cargo fmt"
+fix = "cargo clippy && cargo fmt"
 cov = "cargo test && cargo cmd coverage"
 coverage = "bash .github/workflows/generate-coverage.sh"
 
